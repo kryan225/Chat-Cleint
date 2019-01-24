@@ -8,18 +8,17 @@
 //https://www.tutorialspoint.com/c_standard_library/c_function_strcat.htm - strcat documentation
 //http://www.cs.rpi.edu/~moorthy/Courses/os98/Pgms/client.c - to look at how to make a sockaddr_in
 //https://www.geeksforgeeks.org/taking-string-input-space-c-3-different-methods/ - scanf documentation
-
+//https://stackoverflow.com/questions/8107826/proper-way-to-empty-a-c-string - memset function
 
 
 int main(int argc, const char* argv[])
 {
 
-	char input[100];
-
+	char input[100] = "hmm";
 
 	char fart[] = "\n";
-	scanf("%[^\n]%*c", &input);
-	strcat(input,fart);
+	fgets(input, 100, stdin);
+	//strcat(input,fart);
 
 	printf("%s", input);
 	printf("\n");
@@ -55,16 +54,19 @@ int main(int argc, const char* argv[])
 	char data[] = "lawd he comin \n";
 
 	int see = send(mySocket, &input, sizeof(input), 0);
+
+	memset(input,0,strlen(input));
 	int boo = 1;
 	while(boo){
 		
-		scanf("%[^\n]%*c", &input);
+		fgets(input, 100, stdin);
 		if(sizeof(input) > 0 ){
 			if(input == "exit"){
 				boo = 0;
 			}else{
-				strcat(input,fart);
+				//strcat(input,fart); - 
 				send(mySocket, input, sizeof(input), 0);
+				memset(input,0,strlen(input));
 			}
 			
 		}
