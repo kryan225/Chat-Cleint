@@ -9,11 +9,11 @@
 //http://www.cs.rpi.edu/~moorthy/Courses/os98/Pgms/client.c - to look at how to make a sockaddr_in
 //https://www.geeksforgeeks.org/taking-string-input-space-c-3-different-methods/ - scanf documentation
 //https://stackoverflow.com/questions/8107826/proper-way-to-empty-a-c-string - memset function
-
+//tanner told us to use sleep
 
 int main(int argc, const char* argv[])
 {
-
+	printf("Enter desired user name: ");
 	char input[100] = "hmm";
 
 	char fart[] = "\n";
@@ -22,7 +22,7 @@ int main(int argc, const char* argv[])
 
 	printf("%s", input);
 	printf("\n");
-
+	sleep(1);
 
 	
 	//define In_addr which will holds the ip address
@@ -49,7 +49,7 @@ int main(int argc, const char* argv[])
 	int connection = connect(mySocket, (struct sockaddr *) &mySockaddr_in, sizeof(mySockaddr_in));
 
 
-
+	sleep(1);
 
 	char data[] = "lawd he comin \n";
 
@@ -57,19 +57,48 @@ int main(int argc, const char* argv[])
 
 	memset(input,0,strlen(input));
 	int boo = 1;
+
+	printf("Enter exit string: ");
+	char check[100];
+	fgets(check, 100, stdin);
+
+	printf("Enter recieve string: ");
+	char recString[100];
+	fgets(recString, 100, stdin);
+
+	char rec[1000];
+
 	while(boo){
-		
+		sleep(1);
 		fgets(input, 100, stdin);
-		if(sizeof(input) > 0 ){
-			if(input == "exit"){
-				boo = 0;
-			}else{
-				//strcat(input,fart); - 
-				send(mySocket, input, sizeof(input), 0);
-				memset(input,0,strlen(input));
-			}
+
+		if(strcmp(check, input) == 0){
+			boo = 0;
+		}else if(strcmp(recString, input) == 0){//breaks when receive is called twice in a row
+
+			printf("attempting to receive... \n");
+			printf("Do not run this functino twice in a row or the program will break");
+			sleep(1);
+			int reccheck = read(mySocket, &rec, 1000);
+			printf("%s\n",rec);
+			printf("Recv return: %d",reccheck);
+			printf("\n");
+			memset(rec, 0, strlen(rec));
 			
+		}else{
+			//strcat(input,fart); - 
+			send(mySocket, input, sizeof(input), 0);
+			memset(input,0,strlen(input));
+			printf("attempting to receive... \n");
+			sleep(1);
+			int reccheck = read(mySocket, &rec, 1000);
+			printf("%s\n",rec);
+			printf("Recv return: %d",reccheck);
+			printf("\n");
+			memset(rec, 0, strlen(rec));
 		}
+		
+		
 		
 	}
 	
@@ -92,3 +121,12 @@ int main(int argc, const char* argv[])
 	close(mySocket);
 
 }
+
+/*
+can append newline by doing: str[len(str)] = "\n"]
+							   str[len(str) + 1] = 0
+
+char *name = malloc(80) better way of initializing strings
+bxero(name, sizeof(name)); - clears out string
+bcopy(src, dest,numberofcharacters); - copy a string
+*/
