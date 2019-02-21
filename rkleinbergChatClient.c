@@ -11,6 +11,7 @@
 //https://stackoverflow.com/questions/8107826/proper-way-to-empty-a-c-string - memset function
 //tanner told us to use sleep
 
+
 void recvandprint(int fd, char *buff) {
 
 	int ret;
@@ -49,6 +50,7 @@ int main(int argc, const char* argv[])
 
 
 	printf("Your username is: %s", input);
+
 	printf("\n");
 	sleep(1);
 
@@ -61,18 +63,22 @@ int main(int argc, const char* argv[])
 
 	//create the socket
 	int mySocket = socket(AF_INET, SOCK_STREAM, 0);
+
 	if(mySocket <= 0){
 		printf("Error in socket function, exiting program");
 		boo = 0;
 	}
 
+
 	//changes the form of the ip address, stored in myIn_addr, from its standard text representation to its
 	//numeric binary form
 	int chat = inet_pton(AF_INET, "10.115.20.250", &myIn_addr);
+
 	if(chat <= 0){
 		printf("Error in inet_pton function, exiting program");
 		boo = 0;
 	}
+
 	
 
 	//fill the sockaddr_in with relevant information
@@ -83,6 +89,7 @@ int main(int argc, const char* argv[])
 	
 	//form the connection
 	int connection = connect(mySocket, (struct sockaddr *) &mySockaddr_in, sizeof(mySockaddr_in));
+
 	if(connection < 0){
 		printf("Error in connect function, exiting program");
 		boo = 0;
